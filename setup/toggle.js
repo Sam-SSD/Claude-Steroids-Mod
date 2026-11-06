@@ -3,7 +3,7 @@
 //   on      start the gateway, test it end to end, then write the env + keep your plugins enabled
 //   off     remove the env from settings.json and stop the gateway
 //   ensure  start the gateway if it is down (used at session start)
-// Test without touching anything real:  DRY=1 SETTINGS=/tmp/settings.json node toggle.js on
+// Test without touching anything real:  DRY=1 SETTINGS=/tmp/settings.json node toggle.js on   (STEROIDS_CONFIG=<file> picks another config)
 // Chain: Claude Code -> OmniRoute (routing, fallback, lossless compression) -> providers
 const fs = require("fs"), os = require("os"), path = require("path");
 const { execSync } = require("child_process");
@@ -58,7 +58,7 @@ const editSettings = (fn) => {
 const startServer = async () => {
   if (dry || (await up())) return true;
   console.log(t.starting);
-  execSync("omniroute serve --daemon --no-open", { stdio: "ignore", shell: true });
+  try { execSync("omniroute serve --daemon --no-open", { stdio: "ignore", shell: true }); } catch { return false; } // omniroute missing or failed
   for (let i = 0; i < 30 && !(await up()); i++) await new Promise((r) => setTimeout(r, 2000));
   return up();
 };
@@ -85,7 +85,7 @@ const startServer = async () => {
     console.log(t.on);
   } else if (mode === "off") {
     editSettings((s) => Object.keys(env).forEach((k) => delete s.env[k]));
-    if (!dry) { try { execSync("omniroute stop", { stdio: "ignore", shell: true }); } catch {} }
+    if (!dry && !process.env.STEROIDS_SKIP_SERVER) { try { execSync("omniroute stop", { stdio: "ignore", shell: true }); } catch {} } // STEROIDS_SKIP_SERVER=1: leave the gateway running (tests)
     console.log(t.off);
   } else {
     console.log(t.usage);

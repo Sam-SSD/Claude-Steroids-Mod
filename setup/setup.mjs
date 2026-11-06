@@ -74,7 +74,7 @@ async function install() {
     const [market, id] = extra[name] || [];
     if (!id) { say(`   unknown plugin '${name}' (skipped)`); continue; }
     act(`   install ${id}`, () => {
-      if (name === "mempalace") sh("python -m pip install mempalace");
+      if (name === "mempalace") sh(`${tryOk("python3 --version") ? "python3" : "python"} -m pip install mempalace`); // python3 on macOS/Linux, python on Windows
       if (market) sh(`claude plugin marketplace add ${market}`);
       sh(`claude plugin install ${id} --scope user`);
     });
