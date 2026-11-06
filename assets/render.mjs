@@ -13,9 +13,13 @@ const src = path.join(path.dirname(fileURLToPath(import.meta.url)), "src");
 const out = path.resolve(src, "..");
 const CHROME = process.env.CHROME || "C:/Program Files/Google/Chrome/Application/chrome.exe";
 
-const shot = (page, png, w, h, query = "") =>
+const shot = (page, png, w, h, query = "") => {
+  const before = fs.existsSync(png) ? fs.statSync(png).mtimeMs : 0;
   execFileSync(CHROME, ["--headless=new", "--disable-gpu", "--hide-scrollbars", "--force-device-scale-factor=1", "--virtual-time-budget=300",
     `--window-size=${w},${h}`, `--screenshot=${png}`, pathToFileURL(path.join(src, page)).href + query], { stdio: "ignore" });
+  // Chrome exits 0 even when it cannot write (e.g. the PNG is open in an image viewer): check the file really changed
+  if (!fs.existsSync(png) || fs.statSync(png).mtimeMs <= before) throw new Error(`Chrome did not write ${png} (is it open in another program?)`);
+};
 
 function gif(name, { frames = 48, fps = 16, hold = 14 } = {}) {
   const dir = path.join(src, "_frames", name);

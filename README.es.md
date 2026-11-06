@@ -43,11 +43,19 @@ Claude Steroids es un **mod de Claude Code** (un plugin de hooks con funciones) 
 
 ## Míralo funcionar
 
-*Son animaciones ilustrativas de comportamiento medido, no grabaciones de pantalla.*
+*Animaciones ilustrativas de comportamiento medido, no grabaciones de pantalla.*
 
-| Alternar | Respaldo | Compresión |
-|---|---|---|
-| ![toggle](assets/demo-toggle.gif) | ![fallback](assets/demo-fallback.gif) | ![compression](assets/demo-compression.gif) |
+### 1 · Un comando para cambiar
+
+<p align="center"><img src="assets/demo-toggle.gif" alt="Al escribir /steroids on la insignia pasa de Normal a Steroids" width="800"></p>
+
+### 2 · Cuando un proveedor se agota, responde el siguiente
+
+<p align="center"><img src="assets/demo-fallback.gif" alt="Una petición cae por la cadena de prioridad hasta que un proveedor responde" width="800"></p>
+
+### 3 · Menos tokens en resultados estructurados grandes
+
+<p align="center"><img src="assets/demo-compression.gif" alt="Un resultado JSON de 600 filas baja de 29.351 a 15.586 tokens de entrada" width="800"></p>
 
 ## Instalación rápida (unos 5 minutos)
 

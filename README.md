@@ -43,11 +43,19 @@ It does **not** make Claude smarter. It makes your setup harder to stop and a bi
 
 ## See it work
 
-*These are illustrative animations of measured behaviour, not screen recordings.*
+*Illustrative animations of measured behaviour, not screen recordings.*
 
-| Toggle | Fallback | Compression |
-|---|---|---|
-| ![toggle](assets/demo-toggle.gif) | ![fallback](assets/demo-fallback.gif) | ![compression](assets/demo-compression.gif) |
+### 1 · One command to switch
+
+<p align="center"><img src="assets/demo-toggle.gif" alt="Typing /steroids on turns the badge from Normal to Steroids" width="800"></p>
+
+### 2 · When a provider runs out, the next one answers
+
+<p align="center"><img src="assets/demo-fallback.gif" alt="A request falls through the priority chain until a provider answers" width="800"></p>
+
+### 3 · Fewer tokens on big structured results
+
+<p align="center"><img src="assets/demo-compression.gif" alt="A 600-row JSON result drops from 29,351 to 15,586 input tokens" width="800"></p>
 
 ## Quick start (about 5 minutes)
 

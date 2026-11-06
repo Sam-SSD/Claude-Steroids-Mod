@@ -11,3 +11,6 @@ omniroute.json
 # render leftovers
 assets/src/_*
 node_modules/
+
+# candidate mascots are a decision aid, not part of the repo
+assets/src/candidates/
