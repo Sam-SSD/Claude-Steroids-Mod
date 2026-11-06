@@ -1,6 +1,6 @@
 <div align="center">
 
-![Claude Steroids](assets/banner.png)
+![Claude Steroids](assets/banner.gif)
 
 # Claude Steroids 💪
 

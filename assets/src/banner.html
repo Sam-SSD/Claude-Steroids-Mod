@@ -30,8 +30,8 @@
 </style></head>
 <body><div class="stage">
   <div class="grid"></div>
-  <div class="bolt" style="left:1110px;top:24px;font-size:54px">⚡</div>
-  <div class="bolt" style="left:560px;top:468px;font-size:34px">⚡</div>
+  <div class="bolt b1" style="left:1110px;top:24px;font-size:54px">⚡</div>
+  <div class="bolt b2" style="left:560px;top:468px;font-size:34px">⚡</div>
   <div class="left">
     <span class="chip">OPEN SOURCE · MIT</span>
     <h1>Claude</h1>
@@ -39,6 +39,22 @@
     <p class="tag">Claude Code that <b>never runs out of breath.</b></p>
     <p class="sub">Model fallback · Lossless compression · One-command switch</p>
   </div>
-  <div class="term"><span>&gt;</span> /steroids on&nbsp;<span style="color:#FFD60A">💪</span></div>
+  <div class="term"><span>&gt;</span> <span id="cmd" style="color:#9be58a">/steroids on</span>&nbsp;<span id="mus" style="color:#FFD60A">💪</span></div>
   <img class="mascot" src="mascot.svg" alt="">
-</div></body></html>
+</div>
+<script>
+// ?t=0..1 animates one seamless loop (used for banner.gif); without it the banner is the static final frame
+const q=new URLSearchParams(location.search).get("t");
+if(q!==null){
+  const t=+q,s=Math.sin(2*Math.PI*t),c=Math.cos(2*Math.PI*t),$=x=>document.querySelector(x);
+  const m=$(".mascot");m.style.transformOrigin="50% 100%";
+  m.style.transform="translateY("+(-8*s)+"px) scale("+(1+0.025*(1-c)/2)+")";
+  m.style.filter="drop-shadow(0 18px 24px rgba(0,0,0,.55)) drop-shadow(0 0 "+(14+16*(1-c)/2)+"px rgba(255,214,10,"+(0.25+0.35*(1-c)/2)+"))";
+  $(".b1").style.opacity=.35+.65*Math.abs(Math.sin(2*Math.PI*t*2));
+  $(".b2").style.opacity=.35+.65*Math.abs(Math.cos(2*Math.PI*t*2));
+  $(".b1").style.transform="rotate("+(8*s)+"deg) scale("+(1+.15*Math.abs(s))+")";
+  const full="/steroids on",n=Math.min(full.length,Math.floor(t/0.35*full.length));
+  $("#cmd").textContent=full.slice(0,n)+(t<0.4&&Math.floor(t*40)%2?"▌":"");
+  $("#mus").style.opacity=n>=full.length?1:0;
+}
+</script></body></html>
