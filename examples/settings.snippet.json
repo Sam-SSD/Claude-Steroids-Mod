@@ -1,0 +1,11 @@
+{
+  "_comment": "What `/steroids on` writes into ~/.claude/settings.json (you normally never edit this by hand), plus the optional commit-attribution switch.",
+  "env": {
+    "ANTHROPIC_BASE_URL": "http://localhost:20128",
+    "ANTHROPIC_AUTH_TOKEN": "PASTE-YOUR-OMNIROUTE-API-KEY-HERE",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "steroids-opus[1m]",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "steroids-sonnet[1m]",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "steroids-haiku[1m]"
+  },
+  "attribution": { "commit": "" }
+}

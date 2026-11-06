@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<style>
+  *{box-sizing:border-box;margin:0}
+  html,body{width:1280px;height:640px;overflow:hidden;background:#0d0b10}
+  .stage{position:relative;width:1280px;height:640px;color:#fff;
+    background:
+      radial-gradient(circle at 76% 58%, rgba(217,119,87,.55) 0, rgba(217,119,87,.18) 28%, rgba(0,0,0,0) 55%),
+      linear-gradient(135deg,#1b1320 0%,#0d0b10 60%,#17100f 100%);}
+  .grid{position:absolute;inset:0;opacity:.08;
+    background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);background-size:32px 32px}
+  .bolt{position:absolute;color:#FFD60A;font:900 40px Impact,sans-serif;text-shadow:0 0 18px rgba(255,214,10,.7)}
+  .left{position:absolute;left:64px;top:58px;width:700px}
+  .chip{display:inline-block;font:700 20px Consolas,'Courier New',monospace;letter-spacing:2px;color:#FFD60A;
+    border:2px solid #FFD60A;border-radius:6px;padding:6px 14px;background:rgba(255,214,10,.08)}
+  h1{font:400 64px/1 Impact,'Arial Black',sans-serif;letter-spacing:6px;color:#fff;margin-top:20px;text-transform:uppercase;
+    text-shadow:4px 4px 0 #A9482D}
+  h2{font:400 150px/0.92 Impact,'Arial Black',sans-serif;letter-spacing:4px;text-transform:uppercase;
+    background:linear-gradient(180deg,#FFD60A 0%,#F3A584 35%,#D97757 70%,#A9482D 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    filter:drop-shadow(6px 7px 0 #2a120b)}
+  .tag{white-space:nowrap;margin-top:22px;font:700 30px 'Segoe UI',Arial,sans-serif;color:#fff}
+  .tag b{color:#F3A584}
+  .sub{margin-top:12px;font:500 24px 'Segoe UI',Arial,sans-serif;color:#c9c2cc}
+  .term{position:absolute;left:64px;bottom:44px;font:700 30px Consolas,'Courier New',monospace;
+    background:#0b0b0f;border:2px solid #3b3342;border-radius:10px;padding:12px 22px;color:#9be58a}
+  .term span{color:#c9c2cc}
+  .mascot{position:absolute;right:20px;bottom:16px;height:540px;filter:drop-shadow(0 18px 24px rgba(0,0,0,.55))}
+  .fan{position:absolute;right:28px;bottom:14px;font:500 15px 'Segoe UI',Arial,sans-serif;color:#8d8593}
+</style></head>
+<body><div class="stage">
+  <div class="grid"></div>
+  <div class="bolt" style="left:1110px;top:24px;font-size:54px">⚡</div>
+  <div class="bolt" style="left:560px;top:468px;font-size:34px">⚡</div>
+  <div class="left">
+    <span class="chip">OPEN SOURCE · MIT</span>
+    <h1>Claude</h1>
+    <h2>Steroids</h2>
+    <p class="tag">Claude Code that <b>never runs out of breath.</b></p>
+    <p class="sub">Model fallback · Lossless compression · One-command switch</p>
+  </div>
+  <div class="term"><span>&gt;</span> /steroids on&nbsp;<span style="color:#FFD60A">💪</span></div>
+  <img class="mascot" src="mascot.svg" alt="">
+  <div class="fan">Unofficial fan project · not affiliated with Anthropic</div>
+</div></body></html>

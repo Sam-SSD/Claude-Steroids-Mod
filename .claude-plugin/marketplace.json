@@ -1,0 +1,12 @@
+{
+  "name": "claude-steroids",
+  "description": "Steroids for Claude Code: an OmniRoute switch with model fallback and lossless compression.",
+  "owner": { "name": "Sam-SSD" },
+  "plugins": [
+    {
+      "name": "steroids",
+      "source": "./",
+      "description": "/steroids on|off|status toggle, status badge and plugin reminders for an OmniRoute-backed Claude Code."
+    }
+  ]
+}

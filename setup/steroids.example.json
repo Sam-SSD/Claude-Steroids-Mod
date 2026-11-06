@@ -1,0 +1,13 @@
+{
+  "baseUrl": "http://localhost:20128",
+  "apiKey": "PASTE-YOUR-OMNIROUTE-API-KEY-HERE",
+  "opus": "steroids-opus[1m]",
+  "sonnet": "steroids-sonnet[1m]",
+  "haiku": "steroids-haiku[1m]",
+  "plugins": [],
+  "chains": {
+    "opus":   ["claude/claude-opus-5-5",   "antigravity/claude-opus-4-6-thinking", "antigravity/gemini-3.8-flash-high", "gh/auto", "gh/gpt-4.1"],
+    "sonnet": ["claude/claude-sonnet-5-5", "antigravity/claude-sonnet-4-6",        "antigravity/gemini-3.8-flash-high", "gh/auto", "gh/gpt-4.1"],
+    "haiku":  ["claude/claude-haiku-5-5",  "antigravity/claude-sonnet-4-6",        "antigravity/gemini-3.1-flash-lite", "gh/auto", "gh/gpt-4.1"]
+  }
+}

@@ -1,0 +1,52 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  *{box-sizing:border-box;margin:0}
+  html,body{width:800px;height:450px;overflow:hidden;background:#0d0b10;font-family:'Segoe UI',Arial,sans-serif;color:#fff}
+  .stage{position:relative;width:800px;height:450px;background:radial-gradient(circle at 82% 70%,rgba(217,119,87,.35),transparent 55%),linear-gradient(135deg,#1b1320,#0d0b10 60%)}
+  .win{position:absolute;left:36px;top:34px;width:728px;height:330px;background:#0b0b0f;border:2px solid #3b3342;border-radius:12px;overflow:hidden}
+  .bar{height:30px;background:#1a1620;display:flex;align-items:center;gap:7px;padding:0 12px;font:13px Consolas,monospace;color:#8d8593}
+  .dot{width:11px;height:11px;border-radius:50%}
+  .body{padding:18px 20px;font:20px/1.5 Consolas,'Courier New',monospace}
+  .prompt{border:2px solid #3b3342;border-radius:8px;padding:8px 14px;background:#0f0d13;color:#e8e3ea;height:46px}
+  .prompt .gt{color:#c9c2cc}
+  .cursor{display:inline-block;width:10px;height:22px;background:#e8e3ea;vertical-align:-4px}
+  .out{margin-top:14px;min-height:96px}
+  .out div{opacity:0;transform:translateY(4px)}
+  .ok{color:#9be58a}.dim{color:#8d8593}
+  .foot{position:absolute;left:36px;right:36px;top:372px;display:flex;justify-content:space-between;align-items:center;font:16px Consolas,monospace;color:#8d8593}
+  .badge{display:inline-block;padding:3px 12px;border-radius:999px;border:2px solid #3b3342;color:#c9c2cc;transition:none}
+  .badge.on{border-color:#FFD60A;color:#FFD60A;background:rgba(255,214,10,.12);box-shadow:0 0 22px rgba(255,214,10,.45)}
+  .mascot{position:absolute;right:58px;top:104px;height:150px;transform-origin:50% 100%}
+  .cap{position:absolute;left:36px;bottom:12px;font:12px 'Segoe UI',sans-serif;color:#6f6776}
+  .title{position:absolute;left:36px;top:394px;font:700 17px 'Segoe UI',sans-serif;color:#F3A584}
+</style></head>
+<body><div class="stage">
+  <div class="win"><div class="bar"><span class="dot" style="background:#ff5f57"></span><span class="dot" style="background:#febc2e"></span><span class="dot" style="background:#28c840"></span><span style="margin-left:8px">claude — steroids demo</span></div>
+    <div class="body">
+      <div class="prompt"><span class="gt">&gt;</span> <span id="typed"></span><span class="cursor" id="cur"></span></div>
+      <div class="out" id="out">
+        <div class="dim">Starting OmniRoute...</div>
+        <div class="ok">Steroids ON (plugins kept enabled).</div>
+        <div class="dim">Open a new Claude Code session to use it.</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>? for shortcuts</span><span class="badge" id="badge">⚪ Normal</span></div>
+  <div class="title">One command. New sessions go through the gateway.</div>
+  <img class="mascot" id="mascot" src="mascot.svg" alt="">
+  <div class="cap">Illustrative animation, not a real recording</div>
+</div>
+<script>
+  const clamp=(x)=>Math.min(1,Math.max(0,x)), seg=(t,a,b)=>clamp((t-a)/(b-a));
+  const t=parseFloat(new URLSearchParams(location.search).get('t')||'0');
+  const full='/steroids on', n=Math.round(seg(t,.05,.30)*full.length);
+  document.getElementById('typed').textContent=full.slice(0,n);
+  document.getElementById('cur').style.opacity=(t<.34&&Math.floor(t*40)%2===0)||t<.05?1:(t<.34?0:0);
+  const rows=[...document.querySelectorAll('#out div')];
+  [[.36,.42],[.52,.58],[.62,.68]].forEach(([a,b],i)=>{const k=seg(t,a,b);rows[i].style.opacity=k;rows[i].style.transform=`translateY(${4*(1-k)}px)`});
+  const on=t>=.72, badge=document.getElementById('badge');
+  badge.textContent=on?'💪 Steroids':'⚪ Normal'; badge.classList.toggle('on',on);
+  const pop=seg(t,.72,.84), s=on?1+0.35*Math.sin(Math.PI*pop):1; badge.style.transform=`scale(${s})`;
+  const m=document.getElementById('mascot'); m.style.opacity=on?1:.28; m.style.transform=`scale(${on?1+0.18*Math.sin(Math.PI*pop):1})`;
+</script></body></html>

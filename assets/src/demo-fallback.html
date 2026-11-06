@@ -1,0 +1,59 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  *{box-sizing:border-box;margin:0}
+  html,body{width:800px;height:450px;overflow:hidden;background:#0d0b10;font-family:'Segoe UI',Arial,sans-serif;color:#fff}
+  .stage{position:relative;width:800px;height:450px;background:radial-gradient(circle at 50% 60%,rgba(217,119,87,.28),transparent 60%),linear-gradient(135deg,#1b1320,#0d0b10 60%)}
+  h1{position:absolute;left:36px;top:24px;font:700 26px 'Segoe UI',sans-serif}
+  h1 b{color:#F3A584}
+  .box{position:absolute;border:2px solid #3b3342;border-radius:12px;background:#0f0d13;display:flex;align-items:center;justify-content:center;text-align:center;font:700 17px 'Segoe UI',sans-serif}
+  #cc{left:36px;top:190px;width:130px;height:84px;flex-direction:column;color:#e8e3ea}
+  #cc small{font:12px Consolas,monospace;color:#8d8593;margin-top:4px}
+  #st{left:254px;top:176px;width:150px;height:112px;border-color:#FFD60A;background:rgba(255,214,10,.07);flex-direction:column;color:#FFD60A}
+  #st img{height:60px;margin-bottom:4px}
+  .node{left:520px;width:244px;height:62px;padding:0 14px;justify-content:space-between;font:600 16px 'Segoe UI',sans-serif;color:#e8e3ea}
+  .node .s{font:700 14px Consolas,monospace}
+  svg{position:absolute;left:0;top:0;width:800px;height:450px;pointer-events:none}
+  .pkt{position:absolute;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:#FFD60A;box-shadow:0 0 16px #FFD60A}
+  .note{position:absolute;left:36px;bottom:34px;font:600 18px 'Segoe UI',sans-serif;color:#9be58a;opacity:0}
+  .cap{position:absolute;left:36px;bottom:12px;font:12px 'Segoe UI',sans-serif;color:#6f6776}
+</style></head>
+<body><div class="stage">
+  <h1>When a provider runs out, <b>the next one answers.</b></h1>
+  <svg id="wires"></svg>
+  <div class="box" id="cc">Claude Code<small>your request</small></div>
+  <div class="box" id="st"><img src="mascot.svg" alt="">Steroids</div>
+  <div class="box node" id="n0" style="top:84px"><span>Claude (your plan)</span><span class="s" id="s0"></span></div>
+  <div class="box node" id="n1" style="top:168px"><span>Claude (backup)</span><span class="s" id="s1"></span></div>
+  <div class="box node" id="n2" style="top:252px"><span>Gemini Flash</span><span class="s" id="s2"></span></div>
+  <div class="box node" id="n3" style="top:336px"><span>GPT-4.1 (Copilot)</span><span class="s" id="s3"></span></div>
+  <div class="pkt" id="pkt"></div>
+  <div class="note" id="note">Your request is answered. Nothing for you to do.</div>
+  <div class="cap">Illustration of a priority chain (example order), not a real recording</div>
+</div>
+<script>
+  const clamp=(x)=>Math.min(1,Math.max(0,x)), seg=(t,a,b)=>clamp((t-a)/(b-a)), $=(i)=>document.getElementById(i);
+  const t=parseFloat(new URLSearchParams(location.search).get('t')||'0');
+  const P={cc:[166,232],st0:[254,232],st1:[404,232],n:[0,1,2,3].map(i=>[520,115+i*84])};
+  const W=document.getElementById('wires');
+  const line=(a,b,c,w)=>`<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="${c}" stroke-width="${w}" stroke-dasharray="6 6"/>`;
+  let svg=line(P.cc,P.st0,'#3b3342',3);
+  P.n.forEach((p)=>{svg+=line(P.st1,p,'#3b3342',3)});
+  W.innerHTML=svg;
+  // timeline: 0-.14 to Steroids; .14-.26 -> n0 ; .26-.38 n0 fails; .38-.50 -> n1; .50-.62 n1 fails; .62-.74 -> n2 ; .74 ok ; .86-1 back
+  const lerp=(a,b,k)=>[a[0]+(b[0]-a[0])*k,a[1]+(b[1]-a[1])*k];
+  let pos=P.cc;
+  if(t<.14)pos=lerp(P.cc,P.st0,seg(t,0,.14));
+  else if(t<.26)pos=lerp(P.st1,P.n[0],seg(t,.14,.26));
+  else if(t<.38)pos=P.n[0];
+  else if(t<.50)pos=lerp(P.st1,P.n[1],seg(t,.38,.50));
+  else if(t<.62)pos=P.n[1];
+  else if(t<.74)pos=lerp(P.st1,P.n[2],seg(t,.62,.74));
+  else if(t<.84)pos=P.n[2];
+  else pos=lerp(P.n[2],P.cc,seg(t,.84,1));
+  const pk=$('pkt');pk.style.left=pos[0]+'px';pk.style.top=pos[1]+'px';
+  const set=(i,txt,color)=>{const n=$('n'+i),s=$('s'+i);s.textContent=txt;s.style.color=color;n.style.borderColor=color||'#3b3342';n.style.background=color?color+'14':'#0f0d13'};
+  if(t>=.26)set(0,'✗ quota','#ff6b6b'); if(t>=.50)set(1,'✗ limit','#ff6b6b'); if(t>=.74)set(2,'✓ answered','#9be58a');
+  if(t>=.74&&t<.84)$('n2').style.boxShadow='0 0 24px rgba(155,229,138,.55)';
+  $('note').style.opacity=seg(t,.88,.96);
+</script></body></html>

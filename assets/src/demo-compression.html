@@ -1,0 +1,39 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  *{box-sizing:border-box;margin:0}
+  html,body{width:800px;height:450px;overflow:hidden;background:#0d0b10;font-family:'Segoe UI',Arial,sans-serif;color:#fff}
+  .stage{position:relative;width:800px;height:450px;background:radial-gradient(circle at 75% 75%,rgba(217,119,87,.28),transparent 55%),linear-gradient(135deg,#1b1320,#0d0b10 60%)}
+  h1{position:absolute;left:36px;top:24px;font:700 26px 'Segoe UI',sans-serif}
+  h1 b{color:#F3A584}
+  .sub{position:absolute;left:36px;top:62px;font:500 16px Consolas,monospace;color:#8d8593}
+  .row{position:absolute;left:36px;width:728px}
+  .lbl{font:600 17px 'Segoe UI',sans-serif;color:#c9c2cc;margin-bottom:8px;display:flex;justify-content:space-between}
+  .lbl b{font:700 20px Consolas,monospace;color:#fff}
+  .track{height:46px;border-radius:10px;background:#16121b;border:2px solid #2b2433;overflow:hidden}
+  .fill{height:100%;border-radius:8px}
+  #r1{top:118px}#r2{top:222px}
+  #pct{position:absolute;right:46px;top:312px;font:400 84px Impact,'Arial Black',sans-serif;color:#9be58a;text-shadow:4px 4px 0 #14301a;opacity:0}
+  .warn{position:absolute;left:36px;top:326px;width:470px;font:500 16px/1.45 'Segoe UI',sans-serif;color:#c9c2cc;opacity:0}
+  .warn b{color:#FFD60A}
+  .cap{position:absolute;left:36px;bottom:12px;font:12px 'Segoe UI',sans-serif;color:#6f6776}
+</style></head>
+<body><div class="stage">
+  <h1>A 600-row JSON tool result, <b>billed in tokens</b></h1>
+  <div class="sub">bench/compress-json.mjs · same prompt, same model</div>
+  <div class="row" id="r1"><div class="lbl"><span>Plain Claude Code</span><b id="v1">0</b></div><div class="track"><div class="fill" id="f1" style="background:linear-gradient(90deg,#6b7280,#9ca3af)"></div></div></div>
+  <div class="row" id="r2"><div class="lbl"><span>With Steroids (lossless compression)</span><b id="v2">0</b></div><div class="track"><div class="fill" id="f2" style="background:linear-gradient(90deg,#F3A584,#FFD60A)"></div></div></div>
+  <div id="pct">−47%</div>
+  <div class="warn" id="warn"><b>Honest note:</b> it only shrinks structured data (JSON, tables). On <b>git log and ls output I measured ~0%</b>.</div>
+  <div class="cap">Illustrative animation of measured numbers (29,351 → 15,586 input tokens)</div>
+</div>
+<script>
+  const clamp=(x)=>Math.min(1,Math.max(0,x)), seg=(t,a,b)=>clamp((t-a)/(b-a)), ease=(k)=>1-Math.pow(1-k,3), $=(i)=>document.getElementById(i);
+  const t=parseFloat(new URLSearchParams(location.search).get('t')||'0');
+  const A=29351,B=15586,fmt=(n)=>Math.round(n).toLocaleString('en-US');
+  const k1=ease(seg(t,.05,.35)), k2=ease(seg(t,.35,.70));
+  $('f1').style.width=(k1*100)+'%'; $('v1').textContent=fmt(A*k1);
+  $('f2').style.width=(k1*100*(1-(1-B/A)*k2))+'%'; $('v2').textContent=fmt(k1*(A-(A-B)*k2));
+  const pop=seg(t,.68,.80); $('pct').style.opacity=seg(t,.68,.74); $('pct').style.transform=`scale(${1+0.25*Math.sin(Math.PI*pop)})`;
+  $('warn').style.opacity=seg(t,.82,.92);
+</script></body></html>

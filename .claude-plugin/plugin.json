@@ -1,0 +1,8 @@
+{
+  "name": "steroids",
+  "version": "1.0.0",
+  "description": "Claude Code on steroids: /steroids on|off|status toggles an OmniRoute gateway (model fallback + lossless compression), shows a status badge and reminds the model to use your plugins.",
+  "author": { "name": "Sam-SSD" },
+  "license": "MIT",
+  "repository": "https://github.com/Sam-SSD/Claude-Steroids-Mod"
+}
