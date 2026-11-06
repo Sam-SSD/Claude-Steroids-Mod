@@ -34,3 +34,17 @@ Start OmniRoute on another port (`omniroute serve --port 20130`) and set `baseUr
 
 ## Where is the log?
 Run Claude Code with `claude --debug-file <path>`; hook failures and the gateway's errors show there.
+
+## macOS and Linux
+
+**`omniroute: command not found` after `npm install -g omniroute`.** npm's global folder is not on your `PATH`. Run `export PATH="$(npm prefix -g)/bin:$PATH"` and add the line to `~/.zshrc` or `~/.bashrc`. `claude: command not found` after the native installer usually just needs a new terminal.
+
+**`EACCES: permission denied` while installing with npm.** Do not use `sudo`. Install Node with [nvm](https://github.com/nvm-sh/nvm) (it lives in your home folder), or run `npm config set prefix ~/.npm-global` and put `~/.npm-global/bin` on your `PATH`.
+
+**macOS says a `.command` file "cannot be opened because it is from an unidentified developer".** Right-click it → Open once, or run it from Terminal: `bash "Steroids ON.command"`. If nothing happens on double-click, the file lost its executable bit: `chmod +x "Steroids ON.command" "Steroids OFF.command"`.
+
+**`error: externally-managed-environment` when installing MemPalace (Debian 12+, Ubuntu 23.04+).** The system Python refuses `pip install`. Use `uv tool install mempalace` or `pipx install mempalace`, or a virtual environment.
+
+**I changed `CLAUDE_CONFIG_DIR`.** Steroids always reads and writes `~/.claude` (`%USERPROFILE%\.claude` on Windows). A relocated config folder is not supported yet.
+
+**WSL.** Install Node, OmniRoute and Claude Code inside WSL and follow the Linux steps; `localhost` then means the WSL side. Not tested by me.

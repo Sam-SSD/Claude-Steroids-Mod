@@ -9,7 +9,7 @@ Un comando pone un gateway local entre Claude Code y tus modelos: respaldo autom
 
 [English](README.md) · [Español](README.es.md)
 
-![license](https://img.shields.io/badge/license-MIT-FFD60A) ![node](https://img.shields.io/badge/node-%E2%89%A522.22.2-D97757) ![status](https://img.shields.io/badge/probado%20en-Windows%2010-6b7280)
+![license](https://img.shields.io/badge/license-MIT-FFD60A) ![node](https://img.shields.io/badge/node-%E2%89%A522.22.2-D97757) ![platforms](https://img.shields.io/badge/sistemas-Windows%20%7C%20macOS%20%7C%20Linux-6b7280) [![smoke](https://github.com/Sam-SSD/Claude-Steroids-Mod/actions/workflows/smoke.yml/badge.svg)](https://github.com/Sam-SSD/Claude-Steroids-Mod/actions/workflows/smoke.yml)
 
 </div>
 
@@ -57,27 +57,62 @@ Claude Steroids es un **mod de Claude Code** (un plugin de hooks con funciones) 
 
 <p align="center"><img src="assets/demo-compression.gif" alt="Un resultado JSON de 600 filas baja de 29.351 a 15.586 tokens de entrada" width="800"></p>
 
-## Instalación rápida (unos 5 minutos)
+## Instalación (unos 5 minutos)
 
-Necesitas: **Node 22.22.2 o superior**, **Claude Code 2.1+** y al menos un proveedor de modelos al que puedas iniciar sesión (tu plan de Claude, Gemini, GitHub Copilot...).
+Funciona en **Windows, macOS y Linux**. Elige tu sistema en el paso 1; todo lo demás es igual.
+
+### 1 · Requisitos
+
+| | Windows 10 / 11 | macOS 13+ | Linux (Ubuntu 20.04+, Debian 10+, Alpine 3.19+) |
+|---|---|---|---|
+| **Node.js ≥ 22.22.2** | `winget install OpenJS.NodeJS.22` | `brew install node@22` | `nvm install 22` ([nvm](https://github.com/nvm-sh/nvm)) o tu gestor de paquetes |
+| **Git** | `winget install Git.Git` | `xcode-select --install` | `sudo apt install git` |
+| **Claude Code 2.1+** | `winget install Anthropic.ClaudeCode` | `brew install --cask claude-code` | instalador nativo o `npm install -g @anthropic-ai/claude-code` (sin `sudo`) |
+| Un proveedor de modelos al que puedas iniciar sesión | tu plan de Claude, Gemini, GitHub Copilot... | igual | igual |
+
+Todas las formas de instalar Claude Code están en la [guía oficial](https://code.claude.com/docs/en/setup). Comprueba lo que tienes:
 
 ```bash
-# 1. Descárgalo
-git clone https://github.com/Sam-SSD/Claude-Steroids-Mod
-cd Claude-Steroids-Mod
-
-# 2. Instala: copia el switch, instala el plugin y pregunta antes de tocar CLAUDE.md / settings.json
-node setup/setup.mjs install --with=ponytail,frontend-design     # --with es opcional
-
-# 3. Arranca el gateway y abre su panel
-omniroute serve --daemon          # http://localhost:20128
+node -v          # debe ser v22.22.2 o superior
+claude --version
 ```
 
-4. En el panel: **conecta tus proveedores** y **crea una API key**. Eso necesita tus cuentas, así que ningún script puede hacerlo por ti. Pega la clave en `~/.claude/steroids/steroids.json` (`"apiKey"`). Edita ahí las `chains` según los modelos que tus cuentas pueden usar (`omniroute models` los lista).
+### 2 · Descarga Steroids y ejecuta el instalador
+
+Igual en todos los sistemas:
 
 ```bash
-# 5. Crea los tres combos, prueba cada uno y activa la compresión
-node setup/setup.mjs combos
+git clone https://github.com/Sam-SSD/Claude-Steroids-Mod
+cd Claude-Steroids-Mod
+node setup/setup.mjs install --with=ponytail,frontend-design     # --with es opcional, añade --dry para ver qué haría
+```
+
+Copia el switch a `~/.claude/steroids/`, instala el plugin y **pregunta antes** de tocar `CLAUDE.md` o `settings.json` (primero escribe una copia `.bak-steroids`).
+
+### 3 · Arranca el gateway
+
+```bash
+omniroute serve --daemon          # panel en http://localhost:20128
+```
+
+- `omniroute: command not found`: en **Windows** abre una terminal nueva; en **macOS/Linux** ejecuta `export PATH="$(npm prefix -g)/bin:$PATH"` y añade esa línea al perfil de tu shell.
+- `EACCES` al instalar con npm: **no** uses `sudo`. Usa nvm (instala Node en tu carpeta personal) o `npm config set prefix ~/.npm-global`.
+
+### 4 · Conecta tus proveedores y pega tu clave
+
+En el panel, **conecta tus proveedores** y **crea una API key**. Eso necesita tus cuentas, así que ningún script puede hacerlo por ti. Pega la clave en el archivo de configuración:
+
+| Sistema | Archivo de configuración |
+|---|---|
+| Windows | `%USERPROFILE%\.claude\steroids\steroids.json` |
+| macOS / Linux | `~/.claude/steroids/steroids.json` |
+
+Edita ahí `chains` según los modelos que tus cuentas pueden usar (`omniroute models` los lista).
+
+### 5 · Crea los combos y actívalo
+
+```bash
+node setup/setup.mjs combos       # crea los tres combos, prueba cada uno y activa la compresión
 ```
 
 Luego, dentro de Claude Code:
@@ -88,9 +123,23 @@ Luego, dentro de Claude Code:
 
 Abre una sesión **nueva**. El pie muestra `💪 Steroids`. Listo.
 
+### Opcional: un botón en vez de un comando
+
+| Sistema | Qué usar |
+|---|---|
+| Windows | Copia `setup/shortcuts/Steroids ON.bat` y `Steroids OFF.bat` a tu escritorio. |
+| macOS | Copia `setup/shortcuts/Steroids ON.command` y `Steroids OFF.command` donde quieras, ejecuta `chmod +x` sobre ellos una vez y haz doble clic. La primera vez, clic derecho → Abrir. |
+| Linux | Usa `setup/shortcuts/steroids-on.sh` y `steroids-off.sh` (`chmod +x` una vez, se ejecutan desde una terminal). Para un icono de lanzador, crea un archivo `.desktop` con `Exec=sh -c '/ruta/a/steroids-on.sh'` y `Terminal=true`. |
+
 > ¿Solo quieres el plugin? En Claude Code: `/plugin install steroids --marketplace Sam-SSD/Claude-Steroids-Mod`. Eso instala solo el mod; `/steroids on` además necesita `~/.claude/steroids/toggle.js` y `steroids.json`, que crea el paso 2.
 
-> ¿Prefieres un botón en el escritorio? Copia `setup/shortcuts/Steroids ON.bat` y `Steroids OFF.bat` a tu escritorio (Windows).
+### ¿Cuánto está probado cada sistema?
+
+| Sistema | Qué se comprobó |
+|---|---|
+| **Windows 10** | Todo, a mano: Claude Code 2.1.319, OmniRoute 3.8.53 y el mod en sesiones reales. |
+| **Windows, macOS y Linux** (Node 22 y 24) | Automático en cada subida ([prueba de humo](https://github.com/Sam-SSD/Claude-Steroids-Mod/actions/workflows/smoke.yml)): el switch (`on`, `off`, `ensure`, y que una clave incorrecta deja tus ajustes intactos) contra un gateway simulado, el instalador en modo simulación y los archivos de configuración. |
+| **macOS y Linux con Claude Code y OmniRoute reales** | **No lo he probado yo.** El código no usa llamadas específicas de un sistema salvo los accesos directos, pero no lo he ejecutado completo ahí. Si falla, por favor [abre una incidencia](https://github.com/Sam-SSD/Claude-Steroids-Mod/issues). |
 
 ## Ejemplos de uso
 
@@ -140,7 +189,7 @@ Las dos últimas filas salen de una prueba rápida suelta que no está en este r
 - **Términos de servicio.** Enrutar tu *suscripción* de Claude a través de un gateway de terceros puede no estar permitido por los términos de tu plan. Revísalos o usa una API key.
 - **Solo sesiones nuevas.** Una sesión abierta nunca cambia de conexión.
 - **Aviso en el log:** `unrecognized_model steroids-opus[1m]`. Es inofensivo; el sufijo `[1m]` solo indica un contexto de 1M.
-- **Probado solo en Windows 10**, Claude Code 2.1.319, OmniRoute 3.8.53, Node 22.23.4. macOS y Linux deberían funcionar (las rutas son portables) pero no están probados.
+- **Probado a mano solo en Windows 10** (Claude Code 2.1.319, OmniRoute 3.8.53, Node 22.23.4). macOS y Linux están cubiertos por pruebas de humo automáticas, no por una sesión real de Claude Code: mira [¿Cuánto está probado cada sistema?](#cuánto-está-probado-cada-sistema).
 - **API en acceso anticipado.** La API de plugins de hooks de Claude Code puede cambiar entre versiones.
 - La API key queda en texto plano en dos archivos locales. Mantén OmniRoute escuchando solo en `localhost`.
 - Consejo para Windows: los comandos de hooks escritos con barras invertidas fallan en Git Bash (`command not found`). Usa barras normales.
@@ -155,7 +204,7 @@ claude plugin marketplace remove claude-steroids
 # después
 node setup/setup.mjs compression off      # restaura la compresión previa de OmniRoute
 npm rm -g omniroute                       # opcional
-rm -r ~/.claude/steroids                  # opcional
+rm -rf ~/.claude/steroids                 # opcional (PowerShell: Remove-Item -Recurse -Force "$HOME.claudesteroids")
 ```
 Quita el bloque entre los marcadores `steroids:plugins` de `~/.claude/CLAUDE.md`, o restaura `CLAUDE.md.bak-steroids` / `settings.json.bak-steroids`.
 
@@ -164,6 +213,7 @@ Quita el bloque entre los marcadores `steroids:plugins` de `~/.claude/CLAUDE.md`
 **¿Necesito todos los proveedores?** No. Con uno basta; los respaldos solo importan si conectas más.
 **¿Manda mi código a algún sitio nuevo?** Las peticiones van a los proveedores que *tú* conectaste, a través de un gateway que corre en tu equipo.
 **¿Puedo usarlo sin los plugins que mencionas?** Sí. `--with` es opcional y `plugins` en `steroids.json` puede estar vacío.
+**Uso Claude Code dentro de WSL.** Instala todo dentro de WSL y sigue la columna de Linux. No lo he probado.
 **Mis modelos tienen otros nombres.** Ejecuta `omniroute models`, edita `chains` en `steroids.json` y vuelve a lanzar `node setup/setup.mjs combos`.
 
 ## Créditos
